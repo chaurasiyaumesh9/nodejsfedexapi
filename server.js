@@ -5,18 +5,21 @@ var path = require('path');
 var session      = require('express-session');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
+var cors = require('cors')
+
 var port = process.env.PORT || 3000;
 
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser.json()) // parse application/json
 app.use(session({ secret: 'meanstack passport app' })); // session secret
 app.use(bodyParser.urlencoded({ extended: true })) // parse application/x-www-form-urlencoded
+app.use(cors())
 
 
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'https://checkout.sandbox.netsuite.com/');
+    //res.setHeader('Access-Control-Allow-Origin', 'https://checkout.sandbox.netsuite.com/');
 
     /*// Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
