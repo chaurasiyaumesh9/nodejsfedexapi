@@ -5,7 +5,11 @@ var path = require('path');
 var session      = require('express-session');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
-var cors = require('cors')
+var cors = require('cors');
+var Holidays = require('date-holidays')
+var hd = new Holidays()
+hd = new Holidays('US', 'tx');
+
 
 var port = process.env.PORT || 3000;
 
@@ -35,8 +39,17 @@ app.use(function (req, res, next) {
     next();
 });
 app.get('/', function(req, res) {
-  res.send("hello world!");
+	console.log(hd.getHolidays(2017));
+  	res.send("hello world!");
 });
+
+app.get('/holidays/us/tx', function(req, res) {
+	res.json(hd.getHolidays(2017)) || { mesg:"NO LIST FOUND" };
+});
+
+function getSupportedContries( holidayApi ){
+	return holidayApi.getCountries();
+}
 
 
 app.post('/rates', function(request, response) {
