@@ -8,7 +8,6 @@ var bodyParser   = require('body-parser');
 var cors = require('cors');
 var Holidays = require('date-holidays')
 var hd = new Holidays()
-hd = new Holidays('US', 'tx');
 
 
 var port = process.env.PORT || 3000;
@@ -39,12 +38,27 @@ app.use(function (req, res, next) {
     next();
 });
 app.get('/', function(req, res) {
-	console.log(hd.getHolidays(2017));
+	//console.log(hd.getHolidays(2017));
   	res.send("hello world!");
 });
 
-app.get('/holidays/us/tx', function(req, res) {
-	res.json(hd.getHolidays(2017)) || { mesg:"NO LIST FOUND" };
+app.post('/holidays', function(request, response) {
+	console.log('request.body : ',request.body);
+	var holidayData = request.body;
+	if ( holidayData ) {
+		var country = holidayData['country'], state = holidayData['state'], year = holidayData["year"];
+
+		if ( country && state && year ) {
+			hd = new Holidays(country.toUpperCase(), state );
+			response.json(hd.getHolidays( year ));
+		}else{
+			response.json( {mesg:"Invalid request"} );
+		}
+		//hd = new Holidays('US', 'tx');
+	}else{
+		response.json( {mesg:"NO LIST FOUND"} );
+	}
+	//res.json(hd.getHolidays(2017)) || { mesg:"NO LIST FOUND" };
 });
 
 function getSupportedContries( holidayApi ){
@@ -57,7 +71,7 @@ app.post('/rates', function(request, response) {
   //var zip = request.params.zip;
   //res.send(zip);
  // console.log('body : ',request.body.fedexData);
-  if (request.body.fedexData) {
+  if ( request.body.fedexData ) {
   	var input = request.body.fedexData;
   	var Shipper = input['Shipper'] || {
 			Contact: {
