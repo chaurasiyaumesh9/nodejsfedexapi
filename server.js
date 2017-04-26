@@ -8,8 +8,8 @@ var bodyParser   = require('body-parser');
 var cors = require('cors');
 var Holidays = require('date-holidays');
 var timezone = "America/Chicago";
-Holidays.setTimezone(timezone)
 var hd = new Holidays();
+hd.setTimezone(timezone);
 
 var port = process.env.PORT || 3000;
 
