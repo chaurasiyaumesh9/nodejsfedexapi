@@ -6,9 +6,10 @@ var session      = require('express-session');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var cors = require('cors');
-var Holidays = require('date-holidays')
-var hd = new Holidays()
-
+var Holidays = require('date-holidays');
+var timezone = "America/Chicago";
+Holidays.setTimezone(timezone)
+var hd = new Holidays();
 
 var port = process.env.PORT || 3000;
 
